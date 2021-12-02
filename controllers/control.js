@@ -1,6 +1,7 @@
+const config = require('../private/config.json');
 const apiResponse = require('../services/apiResponse');
 var osc = require('node-osc'),
-client = new osc.Client('10.0.20.35', '10023');
+client = new osc.Client(config.X32_IP, config.X32_PORT);
 async function set_mode(req, res, next) {
     if(req.body.mode == "ONE") {
         client.send(`/load`, 1, (err) => {
