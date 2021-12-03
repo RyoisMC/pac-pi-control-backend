@@ -19,12 +19,12 @@ async function set_mode(req, res, next) {
                 data: {"status": "ok", "message": "Loaded scene 'ONE_PC'"},
             }));
         });
-    } else if (req.body.mode == "FIVE_PC") {
+    } else if (req.body.mode == "FOUR_PC") {
         client.send(`/load`, 3, (err) => {
             if (err) console.error(err);
             return res.json(apiResponse({
                 error: false,
-                data: {"status": "ok", "message": "Loaded scene 'FIVE_PC'"},
+                data: {"status": "ok", "message": "Loaded scene 'FOUR_PC'"},
             }));
         });
     } else if (req.body.mode == "FULL") {
@@ -60,4 +60,10 @@ async function power(req, res, next) {
         }));
     }
 }
-module.exports = { set_mode, power };
+async function get_cstatus(req, res, next) {
+    return res.json(apiResponse({
+        error: true,
+        message: "to be added",
+    }));
+}
+module.exports = { set_mode, power, get_cstatus };
