@@ -1,9 +1,12 @@
 const express = require('express');
 const app = express();
-var cors = require('cors');
+const cors = require('cors');
+const nocache = require('nocache');
 const port = 3000;
-app.use(cors());
 const mountRoutes = require('./routes');
+
+app.use(cors());
+app.use(nocache());
 app.use(express.json())
 mountRoutes(app);
 
