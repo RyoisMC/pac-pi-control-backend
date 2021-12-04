@@ -1,6 +1,6 @@
 const apiResponse = require('../services/apiResponse');
 const redis = require('../services/redis');
-const osc = require('../services/redis');
+const osc = require('../services/osc');
 
 async function mute_ch(req, res, next) {
     await redis.set(`MUTE_${req.params.ch_type}${req.params.ch_number}`, 'MUTED');

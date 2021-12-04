@@ -1,6 +1,6 @@
 const apiResponse = require('../services/apiResponse');
 const redis = require('../services/redis');
-const osc = require('../services/redis');
+const osc = require('../services/osc');
 
 const X32_INPUTS = ['ch01', 'ch02', 'ch03', 'ch04', 'auxin05'];
 
