@@ -1,18 +1,13 @@
-const config = require('../private/config.json');
 const apiResponse = require('../services/apiResponse');
-var osc = require('node-osc');
-const redis = require('redis');
-const redisclient = redis.createClient()
-redisclient.on('error', (err) => console.log('[REDIS ERROR]: ', err));
-redisclient.connect();
-client = new osc.Client(config.X32_IP, config.X32_PORT);
+const redis = require('../services/redis');
+const osc = require('../services/redis');
 
 const X32_INPUTS = ['ch01', 'ch02', 'ch03', 'ch04', 'auxin05'];
 
 async function set_mode(req, res, next) {
     if(req.body.mode == 'ONE') {
-        await redisclient.set('SYS_MODE', 'ONE');
-        client.send(`/load`, 1, (err) => {
+        await redis.set('SYS_MODE', 'ONE');
+        osc.send(`/load`, 1, (err) => {
             if (err) console.error(err);
             return res.json(apiResponse({
                 error: false,
@@ -20,8 +15,8 @@ async function set_mode(req, res, next) {
             }));
         });
     } else if (req.body.mode == 'ONE_PC') {
-        await redisclient.set('SYS_MODE', 'ONE_PC');
-        client.send(`/load`, 2, (err) => {
+        await redis.set('SYS_MODE', 'ONE_PC');
+        osc.send(`/load`, 2, (err) => {
             if (err) console.error(err);
             return res.json(apiResponse({
                 error: false,
@@ -29,8 +24,8 @@ async function set_mode(req, res, next) {
             }));
         });
     } else if (req.body.mode == 'FOUR_PC') {
-        await redisclient.set('SYS_MODE', 'FOUR_PC');
-        client.send(`/load`, 3, (err) => {
+        await redis.set('SYS_MODE', 'FOUR_PC');
+        osc.send(`/load`, 3, (err) => {
             if (err) console.error(err);
             return res.json(apiResponse({
                 error: false,
@@ -38,8 +33,8 @@ async function set_mode(req, res, next) {
             }));
         });
     } else if (req.body.mode == 'FULL') {
-        await redisclient.set('SYS_MODE', 'FULL');
-        client.send(`/load`, 4, (err) => {
+        await redis.set('SYS_MODE', 'FULL');
+        osc.send(`/load`, 4, (err) => {
             if (err) console.error(err);
             return res.json(apiResponse({
                 error: false,
@@ -55,15 +50,15 @@ async function set_mode(req, res, next) {
 }
 async function power(req, res, next) {
     if(req.body.action == 'ON') {
-        await redisclient.set('SYS_PWR', 'ON');
-        X32_INPUTS.forEach(input => {redisclient.set(`MUTE_${input}`, 'UNMUTED')});
+        await redis.set('SYS_PWR', 'ON');
+        X32_INPUTS.forEach(input => {redis.set(`MUTE_${input}`, 'UNMUTED')});
         return res.json(apiResponse({
             error: false,
             data: {'status': 'ok', 'message': 'Sending power on commands'},
         }));
     } else if (req.body.action == 'OFF') {
-        await redisclient.set('SYS_PWR', 'OFF');
-        X32_INPUTS.forEach(input => {redisclient.set(`MUTE_${input}`, 'UNMUTED')});
+        await redis.set('SYS_PWR', 'OFF');
+        X32_INPUTS.forEach(input => {redis.set(`MUTE_${input}`, 'UNMUTED')});
         return res.json(apiResponse({
             error: false,
             data: {'status': 'ok', 'message': 'Sending power off commands'},
@@ -76,9 +71,9 @@ async function power(req, res, next) {
     }
 }
 async function get_cstatus(req, res, next) {
-    const power_data = await redisclient.get('SYS_PWR');
+    const power_data = await redis.get('SYS_PWR');
     if(power_data == 'ON'){
-        const control_status = await redisclient.get('SYS_MODE');
+        const control_status = await redis.get('SYS_MODE');
         return res.json(apiResponse({
             error: false,
             data: { 'power': power_data, 'mode': control_status }
