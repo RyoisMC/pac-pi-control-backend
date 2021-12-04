@@ -56,14 +56,14 @@ async function set_mode(req, res, next) {
 async function power(req, res, next) {
     if(req.body.action == 'ON') {
         await redisclient.set('SYS_PWR', 'ON');
-        X32_INPUTS.forEach(input => {await redisclient.set(`MUTE_${input}`, 'UNMUTED')});
+        X32_INPUTS.forEach(input => {redisclient.set(`MUTE_${input}`, 'UNMUTED')});
         return res.json(apiResponse({
             error: false,
             data: {'status': 'ok', 'message': 'Sending power on commands'},
         }));
     } else if (req.body.action == 'OFF') {
         await redisclient.set('SYS_PWR', 'OFF');
-        X32_INPUTS.forEach(input => {await redisclient.set(`MUTE_${input}`, 'UNMUTED')});
+        X32_INPUTS.forEach(input => {redisclient.set(`MUTE_${input}`, 'UNMUTED')});
         return res.json(apiResponse({
             error: false,
             data: {'status': 'ok', 'message': 'Sending power off commands'},
