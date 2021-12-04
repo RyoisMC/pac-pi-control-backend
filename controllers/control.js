@@ -6,6 +6,9 @@ const redisclient = redis.createClient()
 redisclient.on('error', (err) => console.log('[REDIS ERROR]: ', err));
 redisclient.connect();
 client = new osc.Client(config.X32_IP, config.X32_PORT);
+
+const X32_INPUTS = ['ch01', 'ch02', 'ch03', 'ch04', 'auxin05'];
+
 async function set_mode(req, res, next) {
     if(req.body.mode == 'ONE') {
         await redisclient.set('SYS_MODE', 'ONE');
@@ -53,12 +56,14 @@ async function set_mode(req, res, next) {
 async function power(req, res, next) {
     if(req.body.action == 'ON') {
         await redisclient.set('SYS_PWR', 'ON');
+        X32_INPUTS.forEach(input => {await redisclient.set(`MUTE_${input}`, 'UNMUTED')});
         return res.json(apiResponse({
             error: false,
             data: {'status': 'ok', 'message': 'Sending power on commands'},
         }));
     } else if (req.body.action == 'OFF') {
         await redisclient.set('SYS_PWR', 'OFF');
+        X32_INPUTS.forEach(input => {await redisclient.set(`MUTE_${input}`, 'UNMUTED')});
         return res.json(apiResponse({
             error: false,
             data: {'status': 'ok', 'message': 'Sending power off commands'},
