@@ -8,7 +8,7 @@ async function set_mode(req, res, next) {
             if (err) console.error(err);
             return res.json(apiResponse({
                 error: false,
-                data: {"status": "ok", "message": "Loaded scene 'ONE'"},
+                data: {"status": "ok", "message": "Loaded scene \"ONE\""},
             }));
         });
     } else if (req.body.mode == "ONE_PC") {
@@ -16,7 +16,7 @@ async function set_mode(req, res, next) {
             if (err) console.error(err);
             return res.json(apiResponse({
                 error: false,
-                data: {"status": "ok", "message": "Loaded scene 'ONE_PC'"},
+                data: {"status": "ok", "message": "Loaded scene \"ONE_PC\""},
             }));
         });
     } else if (req.body.mode == "FOUR_PC") {
@@ -24,7 +24,7 @@ async function set_mode(req, res, next) {
             if (err) console.error(err);
             return res.json(apiResponse({
                 error: false,
-                data: {"status": "ok", "message": "Loaded scene 'FOUR_PC'"},
+                data: {"status": "ok", "message": "Loaded scene \"FOUR_PC\""},
             }));
         });
     } else if (req.body.mode == "FULL") {
@@ -32,13 +32,13 @@ async function set_mode(req, res, next) {
             if (err) console.error(err);
             return res.json(apiResponse({
                 error: false,
-                data: {"status": "ok", "message": "Loaded scene 'FULL'"},
+                data: {"status": "ok", "message": "Loaded scene \"FULL\""},
             }));
         });
     } else {
         return res.json(apiResponse({
             error: true,
-            message: "Please provide a mode of either 'ONE', 'ONE_PC', 'FIVE_PC', or 'FULL'",
+            message: "Please provide a mode of either \"ONE\", \"ONE_PC\", \"FIVE_PC\", or \"FULL\"",
         }));
     }
 }
@@ -56,7 +56,7 @@ async function power(req, res, next) {
     } else {
         return res.json(apiResponse({
             error: true,
-            message: "Please provide an action of either 'ON', or 'OFF'",
+            message: "Please provide an action of either \"ON\", or \"OFF\"",
         }));
     }
 }
