@@ -7,7 +7,7 @@ const X32_INPUTS = ['ch01', 'ch02', 'ch03', 'ch04', 'auxin05'];
 async function set_mode(req, res, next) {
     if(req.body.mode == 'ONE') {
         await redis.set('SYS_MODE', 'ONE');
-        osc.send(`/load`, 1, (err) => {
+        osc.send(`/load`, ['scene', 1], (err) => {
             if (err) console.error(err);
             return res.json(apiResponse({
                 error: false,
@@ -16,7 +16,7 @@ async function set_mode(req, res, next) {
         });
     } else if (req.body.mode == 'ONE_PC') {
         await redis.set('SYS_MODE', 'ONE_PC');
-        osc.send(`/load`, 2, (err) => {
+        osc.send(`/load`, ['scene', 2], (err) => {
             if (err) console.error(err);
             return res.json(apiResponse({
                 error: false,
@@ -25,7 +25,7 @@ async function set_mode(req, res, next) {
         });
     } else if (req.body.mode == 'FOUR_PC') {
         await redis.set('SYS_MODE', 'FOUR_PC');
-        osc.send(`/load`, 3, (err) => {
+        osc.send(`/load`, ['scene', 3], (err) => {
             if (err) console.error(err);
             return res.json(apiResponse({
                 error: false,
@@ -34,7 +34,7 @@ async function set_mode(req, res, next) {
         });
     } else if (req.body.mode == 'FULL') {
         await redis.set('SYS_MODE', 'FULL');
-        osc.send(`/load`, 4, (err) => {
+        osc.send(`/load`, ['scene', 0], (err) => {
             if (err) console.error(err);
             return res.json(apiResponse({
                 error: false,
